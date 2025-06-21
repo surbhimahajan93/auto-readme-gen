@@ -1,0 +1,28 @@
+# Code owners file for auto-readme-gen
+# This file defines who is responsible for different parts of the codebase
+
+# Global owners - these people will be requested for review on all pull requests
+* @surbhimahajan93
+
+# Core CLI functionality
+/main.py @surbhimahajan93
+/generator.py @surbhimahajan93
+
+# AI enhancement functionality
+/ai_helpers.py @surbhimahajan93
+
+# Configuration files
+/requirements.txt @surbhimahajan93
+/pyproject.toml @surbhimahajan93
+
+# Documentation
+/README.md @surbhimahajan93
+/TEST_RESULTS.md @surbhimahajan93
+
+# GitHub configuration
+/.github/ @surbhimahajan93
+
+# Development and testing
+/tests/ @surbhimahajan93
+*.test.py @surbhimahajan93
+*_test.py @surbhimahajan93 

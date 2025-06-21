@@ -1,0 +1,71 @@
+# Branch Protection Rules for auto-readme-gen
+# This file defines protection rules for the main branch
+
+name: "Branch Protection Rules"
+
+# Protection rules for main branch
+branches:
+  - name: "main"
+    protection:
+      # Require pull request reviews before merging
+      required_pull_request_reviews:
+        required_approving_review_count: 1
+        dismiss_stale_reviews: true
+        require_code_owner_reviews: false
+        require_last_push_approval: true
+      
+      # Require status checks to pass before merging
+      required_status_checks:
+        strict: true
+        contexts:
+          - "lint"
+          - "test"
+          - "build"
+      
+      # Enforce signed commits
+      enforce_admins: false
+      required_signatures: false
+      
+      # Restrict pushes to matching branches
+      restrictions:
+        users: []
+        teams: []
+        apps: []
+      
+      # Allow force pushes (disable for production)
+      allow_force_pushes: false
+      
+      # Allow deletions (disable for production)
+      allow_deletions: false
+      
+      # Require linear history
+      required_linear_history: true
+      
+      # Require branches to be up to date before merging
+      required_conversation_resolution: true
+      
+      # Lock branch (disable for active development)
+      lock_branch: false
+      
+      # Allow fork syncing
+      allow_fork_syncing: true
+
+# Additional branch patterns (optional)
+# - name: "develop"
+#   protection:
+#     required_pull_request_reviews:
+#       required_approving_review_count: 1
+#     required_status_checks:
+#       strict: true
+#       contexts:
+#         - "lint"
+#         - "test"
+
+# - name: "feature/*"
+#   protection:
+#     required_pull_request_reviews:
+#       required_approving_review_count: 1
+#     required_status_checks:
+#       strict: false
+#       contexts:
+#         - "lint" 

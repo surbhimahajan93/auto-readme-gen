@@ -1,0 +1,92 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Run flake8
+      run: |
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=88 --statistics
+    
+    - name: Run black check
+      run: |
+        black --check --diff .
+
+  test:
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Run tests
+      run: |
+        python -c "from generator import generate_readme; print('Import test passed')"
+        python -c "from ai_helpers import enhance_readme_with_ai; print('AI helpers test passed')"
+        python main.py --help
+    
+    - name: Test README generation
+      run: |
+        mkdir test_project
+        echo "# Test Project" > test_project/test.py
+        python main.py test_project --output TEST_README.md --verbose
+        ls -la test_project/
+        rm -rf test_project
+
+  build:
+    runs-on: ubuntu-latest
+    needs: [lint, test]
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Build package
+      run: |
+        python -c "import main, generator, ai_helpers; print('All modules import successfully')"
+    
+    - name: Check package structure
+      run: |
+        echo "Checking required files exist..."
+        test -f main.py
+        test -f generator.py
+        test -f ai_helpers.py
+        test -f requirements.txt
+        test -f README.md
+        echo "All required files present" 
