@@ -1,0 +1,15 @@
+# Core dependencies
+pathlib2>=2.3.0; python_version < "3.4"
+typing-extensions>=4.0.0; python_version < "3.8"
+
+# TOML parsing (for pyproject.toml)
+tomli>=2.0.0; python_version < "3.11"
+
+# Optional AI enhancements
+openai>=1.0.0
+anthropic>=0.7.0
+
+# Development dependencies
+pytest>=7.0.0
+black>=22.0.0
+flake8>=5.0.0
